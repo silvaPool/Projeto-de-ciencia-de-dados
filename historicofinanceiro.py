@@ -215,8 +215,59 @@ is_correct = y_pred == y_test
 
 # Calculando a acurácia da classificação com o scikit-learn
 
-print(example_lr.score(X_test, y_test))
+#print(example_lr.score(X_test, y_test))
 
 from sklearn import metrics
 
-print(metrics.accuracy_score(y_test, y_pred))
+#print(metrics.accuracy_score(y_test, y_pred))
+
+#Calcular as taxas de verdadeiros e falsos positivos e negativos e a matriz de confusão
+
+#número de amostras positivas
+
+P = sum(y_test)
+
+#print(P)
+
+#número de verdadeiros positivos
+
+TP = sum((y_test == 1) & (y_pred == 1))
+
+#print(TP)
+
+#Calculando a taxa de verdadeiros positivos
+
+TPR = TP/P
+
+#print(TPR)
+
+#Falsos negativos
+
+FN = sum((y_test == 1) & (y_pred == 0))
+
+#print(FN)
+ 
+#Taxa de falsos negativos
+
+FNR = FN/P
+
+#print(FNR)
+
+#Calculando a TNR e a FPR
+
+N = sum(y_test==0)
+#print(N)
+
+TN = sum((y_test == 0) & (y_pred == 0))
+#print(TN)
+
+FP = sum((y_test == 0) & (y_pred == 1))
+#print(FP)
+
+TNR = TN/N
+FPR = FP/N
+#print('The true negative rate is {} and the false positive rate is {}'.format(TNR, FPR))
+
+#Matriz de confusão no scikit-learn
+
+print(metrics.confusion_matrix(y_test, y_pred))
