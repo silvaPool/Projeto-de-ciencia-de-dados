@@ -270,4 +270,75 @@ FPR = FP/N
 
 #Matriz de confusão no scikit-learn
 
-print(metrics.confusion_matrix(y_test, y_pred))
+metrics.confusion_matrix(y_test, y_pred)
+
+#Obtendo probabilidades previstas a partir de um modelo de regressão logística
+
+#Obtendo as probabilidades previstas para as amostras de teste
+
+y_pred_proba = example_lr.predict_proba(X_test)
+
+#print(y_pred_proba)
+
+#Soma das probabilidades previstas para cada amostra
+
+prob_sum = np.sum(y_pred_proba,1)
+
+#print(prob_sum)
+
+#Verificando a forma do array
+
+prob_sum.shape
+
+#Elementos exclusivos do array
+
+np.unique(prob_sum)
+
+#Inserindo a segunda coluna do array de probabilidades previstas (probabilidade de associação de classe positiva) em um array
+
+pos_proba = y_pred_proba[:,1]
+
+#print(pos_proba)
+
+mpl.rcParams['font.size'] = 12
+
+
+#plt.hist(pos_proba)
+
+#plt.xlabel('Predicted probability of positive class for testing data')
+
+#plt.ylabel('Number pf samples')
+
+#plt.show()
+
+#Isolando as probabilidades previstas das amostras positivas e negativas
+
+pos_sample_pos_proba = pos_proba[y_test==1]
+neg_sample_pos_proba = pos_proba[y_test==0]
+
+#Plotando um histograma empilhado
+
+#plt.hist([pos_sample_pos_proba, neg_sample_pos_proba], histtype='barstacked')
+#plt.legend(['Positive samples', 'Negative samples'])
+#plt.xlabel('Predicted probability of positive class')
+#plt.ylabel('Number of samples')
+#plt.show()
+
+# curva ROC
+fpr, tpr, thresholds = metrics.roc_curve(y_test, pos_proba)
+
+plt.plot(fpr, tpr, '*-')
+plt.plot([0, 1], [0, 1], 'r--')
+plt.legend(['Logistic regression', 'Random chance'])
+plt.xlabel('FPR')
+plt.ylabel('TPR')
+plt.title('ROC curve')
+
+plt.show()
+
+print(thresholds)
+
+print(metrics.roc_auc_score(y_test, pos_proba))
+
+
+
